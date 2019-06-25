@@ -1,0 +1,37 @@
+# Byte-compiled / optimized / DLL files
+__pycache__/
+*.pyc
+
+# C extensions
+*.so
+*.o
+
+# Distribution / packaging
+.Python
+build/
+
+
+weights
+pretrained
+val_results
+
+*.pth
+
+# Temporary files
+runs
+eval
+*.out
+
+lib/detector_div.py
+lib/functions.py
+
+# Experimental codes
+models/SSD_lite_mobilenets.py
+trashbins
+test_trainset
+
+# Demo files
+demofiles
+results
+*.jpg
+*.mp4
