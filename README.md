@@ -58,16 +58,17 @@ $COCO/images/val2014/
 or from our [BaiduYun Driver](https://pan.baidu.com/s/1jIP86jW) 
 - MobileNet pre-trained basenet is ported from [MobileNet-Caffe](https://github.com/shicai/MobileNet-Caffe), which achieves slightly better accuracy rates than the original one reported in the [paper](https://arxiv.org/abs/1704.04861), weight file is available at: https://drive.google.com/open?id=13aZSApybBDjzfGIdqN1INBlPsddxCK14 or [BaiduYun Driver](https://pan.baidu.com/s/1dFKZhdv).
 
-- By default, we assume you have downloaded the file in the `DRFBNet300/weights` dir:
+- By default, we assume you have downloaded the file in the `DNet300/weights` dir:
 ```Shell
 mkdir weights
 cd weights
 wget https://s3.amazonaws.com/amdegroot-models/vgg16_reducedfc.pth
 ```
 
-- To train RFBNet using the train script simply specify the parameters listed in `train.py` as a flag or manually change them.
+- To train DRFBNet using the train script simply specify the parameters listed in `train.py` as a flag or manually change them.
+ - See the `train.py` file for details
 ```Shell
-python train_RFB.py -d dataset_name -v version_name -s 300 
+python train.py -d dataset_name -v version_name -s 300 
 ```
 - Note:
   * -d: choose datasets, VOC or COCO, custom.
@@ -77,8 +78,8 @@ python train_RFB.py -d dataset_name -v version_name -s 300
   * If you want to reproduce the results in the paper, the VOC model should be trained about 240 epoches while the COCO version need 130 epoches.
   
 ## Evaluation
-To evaluate a trained network:
-
+- To evaluate a trained network:
+ - See the `test.py`, `val_custom.py` file for details
 ```Shell
 python test.py -d VOC -v RFB_vgg -s 300 --trained_model /path/to/model/weights
 ```
