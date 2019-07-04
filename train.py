@@ -17,9 +17,6 @@ from layers.functions import PriorBox
 import time
 import sys
 
-from tensorboardX import SummaryWriter
-summary = SummaryWriter()
-
 parser = argparse.ArgumentParser(
     description='Receptive Field Block Net Training')
 parser.add_argument('-v', '--version', default='RFB_vgg',
@@ -55,10 +52,19 @@ parser.add_argument('--log_iters', default=True,
                     type=bool, help='Print the loss at each iteration')
 parser.add_argument('--save_folder', default='./weights/',
                     help='Location to save checkpoint models')
+parser.add_argument('--summary_writer', default=None,
+                    help='summary writing folder location')
 args = parser.parse_args()
 
 if not os.path.exists(args.save_folder):
     os.mkdir(args.save_folder)
+
+if not args.summary_writer == None:
+    from tensorboardX import SummaryWriter
+    summary = SummaryWriter(args.summary_writer)
+else:
+    from tensorboardX import SummaryWriter
+    summary = SummaryWriter()
 
 if args.dataset == 'VOC':
     train_sets = [('2007', 'trainval'), ('2012', 'trainval')]
