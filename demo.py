@@ -104,7 +104,8 @@ else:
     sys.exit()
 
 # color number book: http://www.n2n.pe.kr/lev-1/color.htm
-COLORS = [(255, 0, 0), (153, 255, 0), (0, 0, 255), (102, 0, 0), (153, 102, 51)] # BGR
+#COLORS = [(255, 0, 0), (153, 255, 0), (0, 0, 255), (102, 0, 0), (153, 102, 51)] # BGR
+COLORS = [(0, 0, 204), (153, 255, 51), (255, 204, 0)] # BGR
 FONT = cv2.FONT_HERSHEY_SIMPLEX
 
 # Prior box setting
@@ -120,12 +121,12 @@ def demo_img(object_detector, img, save_dir):
 
     FPS = float(1/times[0])
     for labels, scores, coords in zip(_labels, _scores, _coords):
-        cv2.rectangle(img, (int(coords[0]), int(coords[1])), (int(coords[2]), int(coords[3])), COLORS[1], 2)
-        cv2.putText(img, '{label}: {score:.2f}'.format(label=lable_map[labels], score=scores), (int(coords[0]), int(coords[1])), FONT, 0.5, COLORS[1], 2)
-    
-    status = 'FPS_tot: {:.2f} t_inf: {:.2f} t_misc: {:.2f}s \r'.format(FPS, times[1], times[2])
-    cv2.putText(img, status[:-2], (10, 20), FONT, 0.7, (0, 0, 0), 5)
-    cv2.putText(img, status[:-2], (10, 20), FONT, 0.7, (255, 255, 255), 2)
+        cv2.rectangle(img, (int(coords[0]), int(coords[1])), (int(coords[2]), int(coords[3])), COLORS[labels % 3], 2)
+        cv2.putText(img, '{label}: {score:.2f}'.format(label=lable_map[labels], score=scores), (int(coords[0]), int(coords[1])), FONT, 1, COLORS[1], 1)
+
+    status = 'FPS: {:.2f} T_inf: {:.3f} T_misc: {:.3f}s \r'.format(avg_FPS, times[1], times[2])
+    cv2.putText(img, status[:-2], (10, 20), FONT, 0.5, (0, 0, 0), 5)
+    cv2.putText(img, status[:-2], (10, 20), FONT, 0.5, (255, 255, 255), 2)
     cv2.imwrite(save_dir, img)
 
 def demo_stream(object_detector, video, save_dir):
@@ -151,16 +152,16 @@ def demo_stream(object_detector, video, save_dir):
         avg_FPS = sum_FPS / (index+1)
 
         for labels, scores, coords in zip(_labels, _scores, _coords):
-            cv2.rectangle(img, (int(coords[0]), int(coords[1])), (int(coords[2]), int(coords[3])), COLORS[1], 2)
-            cv2.putText(img, '{label}: {score:.2f}'.format(label=lable_map[labels], score=scores), (int(coords[0]), int(coords[1])), FONT, 0.5, COLORS[1], 2)
+            cv2.rectangle(img, (int(coords[0]), int(coords[1])), (int(coords[2]), int(coords[3])), COLORS[labels % 3], 2)
+            cv2.putText(img, '{label}: {score:.2f}'.format(label=lable_map[labels], score=scores), (int(coords[0]), int(coords[1])), FONT, 1, COLORS[labels % 3], 2)
     
-        status = 'Frame: {:d} FPS_tot: {:.2f} T_inf: {:.3f} T_misc: {:.3f}s \r'.format(index, avg_FPS, times[1], times[2])
-        cv2.putText(img, status[:-2], (10, 20), FONT, 0.7, (0, 0, 0), 5)
-        cv2.putText(img, status[:-2], (10, 20), FONT, 0.7, (255, 255, 255), 2)
+        status = 'FPS: {:.2f} T_inf: {:.3f} T_misc: {:.3f}s \r'.format(avg_FPS, times[1], times[2])
+        cv2.putText(img, status[:-2], (10, 20), FONT, 0.5, (0, 0, 0), 5)
+        cv2.putText(img, status[:-2], (10, 20), FONT, 0.5, (255, 255, 255), 2)
 
         cv2.imwrite(os.path.join(save_dir, 'frame_{}.jpg'.format(index)), img)
         video_out.write(img)
-
+        status = 'Frame: {:d} '.format(index) + status
         sys.stdout.write(status)
         sys.stdout.flush()
     
@@ -204,7 +205,6 @@ if __name__ == '__main__':
     # Setting network
     print('Network setting...')
     img_dim = (300,512)[args.size=='512']
-    #num_classes = (21, 81)[args.dataset == 'COCO']
     rgb_means = ((103.94,116.78,123.68), (104, 117, 123))[args.version == 'RFB_vgg' or args.version == 'RFB_E_vgg']
     p = (0.2, 0.6)[args.version == 'RFB_vgg' or args.version == 'RFB_E_vgg']
     

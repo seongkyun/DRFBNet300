@@ -23,20 +23,20 @@ from utils.pycocotools.cocoeval import COCOeval
 from utils.pycocotools import mask as COCOmask
 
 COCO_CLASSES = ('person', 'bicycle', 'car', 'motorcycle', 'airplane', 'bus',
-                'train', 'truck', 'boat', 'traffic light', 'fire', 'hydrant',
-                'stop sign', 'parking meter', 'bench', 'bird', 'cat', 'dog',
+                'train', 'truck', 'boat', 'traffic_light', 'fire', 'hydrant',
+                'stop_sign', 'parking_meter', 'bench', 'bird', 'cat', 'dog',
                 'horse', 'sheep', 'cow', 'elephant', 'bear', 'zebra',
                 'giraffe', 'backpack', 'umbrella', 'handbag', 'tie',
-                'suitcase', 'frisbee', 'skis', 'snowboard', 'sports ball',
-                'kite', 'baseball bat', 'baseball glove', 'skateboard',
-                'surfboard', 'tennis racket', 'bottle', 'wine glass', 'cup',
+                'suitcase', 'frisbee', 'skis', 'snowboard', 'sports_ball',
+                'kite', 'baseball_bat', 'baseball_glove', 'skateboard',
+                'surfboard', 'tennis_racket', 'bottle', 'wine glass', 'cup',
                 'fork', 'knife', 'spoon', 'bowl', 'banana', 'apple',
                 'sandwich', 'orange', 'broccoli', 'carrot', 'hot dog', 'pizza',
-                'donut', 'cake', 'chair', 'couch', 'potted plant', 'bed',
-                'dining table', 'toilet', 'tv', 'laptop', 'mouse', 'remote',
-                'keyboard', 'cell phone', 'microwave oven', 'toaster', 'sink',
+                'donut', 'cake', 'chair', 'couch', 'potted_plant', 'bed',
+                'dining_table', 'toilet', 'tv', 'laptop', 'mouse', 'remote',
+                'keyboard', 'cell phone', 'microwave_oven', 'toaster', 'sink',
                 'refrigerator', 'book', 'clock', 'vase', 'scissors',
-                'teddy bear', 'hair drier', 'toothbrush')
+                'teddy_bear', 'hair_drier', 'toothbrush')
 
 class COCODetection(data.Dataset):
 

@@ -75,7 +75,6 @@ elif args.dataset == 'COCO':
     cfg = (COCO_300, COCO_512)[args.size == '512']
     num_classes = 81
 else:
-    #train_sets = [('2014', 'train'),('2014', 'valminusminival')]
     train_sets = 'Customset'
     cfg = (COCO_300, COCO_512)[args.size == '512']
     num_classes = 2
