@@ -104,7 +104,6 @@ else:
     sys.exit()
 
 # color number book: http://www.n2n.pe.kr/lev-1/color.htm
-#COLORS = [(255, 0, 0), (153, 255, 0), (0, 0, 255), (102, 0, 0), (153, 102, 51)] # BGR
 COLORS = [(0, 0, 204), (153, 255, 51), (255, 204, 0)] # BGR
 FONT = cv2.FONT_HERSHEY_SIMPLEX
 
@@ -155,13 +154,12 @@ def demo_stream(object_detector, video, save_dir):
             cv2.rectangle(img, (int(coords[0]), int(coords[1])), (int(coords[2]), int(coords[3])), COLORS[labels % 3], 2)
             cv2.putText(img, '{label}: {score:.2f}'.format(label=lable_map[labels], score=scores), (int(coords[0]), int(coords[1])), FONT, 1, COLORS[labels % 3], 2)
     
-        status = 'FPS: {:.2f} T_inf: {:.3f} T_misc: {:.3f}s \r'.format(avg_FPS, times[1], times[2])
+        status = 'Frame: {:d} FPS: {:.2f} T_inf: {:.3f} T_misc: {:.3f}s \r'.format(index, avg_FPS, times[1], times[2])
         cv2.putText(img, status[:-2], (10, 20), FONT, 0.5, (0, 0, 0), 5)
         cv2.putText(img, status[:-2], (10, 20), FONT, 0.5, (255, 255, 255), 2)
 
         cv2.imwrite(os.path.join(save_dir, 'frame_{}.jpg'.format(index)), img)
         video_out.write(img)
-        status = 'Frame: {:d} '.format(index) + status
         sys.stdout.write(status)
         sys.stdout.flush()
     
