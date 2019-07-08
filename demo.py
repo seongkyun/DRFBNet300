@@ -121,9 +121,9 @@ def demo_img(object_detector, img, save_dir):
     FPS = float(1/times[0])
     for labels, scores, coords in zip(_labels, _scores, _coords):
         cv2.rectangle(img, (int(coords[0]), int(coords[1])), (int(coords[2]), int(coords[3])), COLORS[labels % 3], 2)
-        cv2.putText(img, '{label}: {score:.2f}'.format(label=lable_map[labels], score=scores), (int(coords[0]), int(coords[1])), FONT, 1, COLORS[1], 1)
+        cv2.putText(img, '{label}: {score:.2f}'.format(label=lable_map[labels], score=scores), (int(coords[0]), int(coords[1])), FONT, 1, COLORS[labels % 3], 1)
 
-    status = 'FPS: {:.2f} T_inf: {:.3f} T_misc: {:.3f}s \r'.format(avg_FPS, times[1], times[2])
+    status = 'FPS: {:.2f} T_inf: {:.3f} T_misc: {:.3f}s \r'.format(FPS, times[1], times[2])
     cv2.putText(img, status[:-2], (10, 20), FONT, 0.5, (0, 0, 0), 5)
     cv2.putText(img, status[:-2], (10, 20), FONT, 0.5, (255, 255, 255), 2)
     cv2.imwrite(save_dir, img)
@@ -165,14 +165,21 @@ def demo_stream(object_detector, video, save_dir):
     
     video.release()
     video_out.release()
-    cv2.destroyAllWindows()   
-    
+    cv2.destroyAllWindows()
+
 if __name__ == '__main__':
     # Validity check
     print('Validity check...')
-    if not args.type == 'camera':
+    if not args.type in ['camera', 'folder']:
         assert os.path.isfile(args.file), 'ERROR::DEMO FILE DOES NOT EXIST'
     assert os.path.isfile(args.trained_model), 'ERROR::WEIGHT FILE DOES NOT EXIST'
+    file_type = args.file[-3:].lower()
+    if file_type in ['png', 'jpg']:
+        print('Demo type is changed to the input file type: image')
+        args.type = 'image'
+    elif file_type in ['mp4', 'avi']:
+        print('Demo type is changed to the input file type: video')
+        args.type = 'video'
 
     # Directory setting
     print('Directory setting...')
@@ -192,6 +199,14 @@ if __name__ == '__main__':
             os.mkdir(save_dir)
     elif args.type == 'camera':
         filename = args.version + '_camera_' + str(args.camera_num)
+        save_dir = os.path.join(args.save_folder, filename)
+        if args.div:
+            save_dir = save_dir + '_divided_mode'
+        if not os.path.exists(save_dir):
+            os.mkdir(save_dir)
+    elif args.type == 'folder':
+        path, _ = os.path.splitext(args.file)
+        filename = args.version + '_' + path.split('/')[-2]
         save_dir = os.path.join(args.save_folder, filename)
         if args.div:
             save_dir = save_dir + '_divided_mode'
@@ -252,6 +267,27 @@ if __name__ == '__main__':
         object_detector = ObjectDetector(net, priorbox, priors, transform, detector, width, height, args.altitude)
         
         demo_stream(object_detector, video, save_dir)
+    elif args.type == 'folder':
+        from lib.map_functions import file_list
+        img_list = sorted(file_list(args.file))
+        
+        tot_idx = len(img_list)
+        index = -1
+        save_folder = save_dir
+
+        for img_file in img_list:
+            index += 1
+            save_dir = os.path.join(save_folder, img_file)
+
+            img = cv2.imread(os.path.join(args.file, img_file))
+            width = int(img.shape[1])
+            height = int(img.shape[0])
+            object_detector = ObjectDetector(net, priorbox, priors, transform, detector, width, height, args.altitude)
+
+            demo_img(object_detector, img, save_dir)
+            status = 'Total Images: {:d} Cur Image: {:d} \r'.format(tot_idx, index+1)
+            sys.stdout.write(status)
+            sys.stdout.flush()
     else:
         raise AssertionError('ERROR::TYPE IS NOT CORRECT')
 

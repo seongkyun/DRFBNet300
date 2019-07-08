@@ -253,7 +253,6 @@ if __name__ == '__main__':
     width = int(img.shape[1])
     height = int(img.shape[0])
     object_detector = ObjectDetector(net, priorbox, priors, transform, detector, width, height, args.altitude)
-    #object_detector = ObjectDetector(net, priorbox, priors, transform, detector, width, height)
     
     GT_PATH, DR_PATH = val_images(object_detector, args.images, args.annotations, save_dir)
 

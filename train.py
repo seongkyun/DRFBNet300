@@ -186,8 +186,6 @@ with torch.no_grad():
 def train():
     net.train()
 
-    #summary(net, input_size=(3, 300, 300))
-    #sys.exit()
     save_dir = os.path.join(args.save_folder, args.version + '_' + args.dataset)
     if not os.path.exists(save_dir):
         os.mkdir(save_dir)
