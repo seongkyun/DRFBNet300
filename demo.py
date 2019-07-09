@@ -163,6 +163,7 @@ def demo_stream(object_detector, video, save_dir):
     video.release()
     video_out.release()
     cv2.destroyAllWindows()
+    print(status)
 
 if __name__ == '__main__':
     # Validity check
@@ -285,6 +286,7 @@ if __name__ == '__main__':
             status = 'Total Images: {:d} Cur Image: {:d} \r'.format(tot_idx, index+1)
             sys.stdout.write(status)
             sys.stdout.flush()
+        print(status)
     else:
         raise AssertionError('ERROR::TYPE IS NOT CORRECT')
 

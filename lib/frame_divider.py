@@ -10,13 +10,14 @@ parser.add_argument('--save_folder', default='demofiles/', type=str,
                     help='Dir to save results')
 parser.add_argument('-r', '--rate', default=1, type=int, help='sampling number')
 parser.add_argument('-tf', '--total_frame', default=None, type=int, help='number of total frame')
+parser.add_argument('-s', '--start_number', default=0, type=int, help='start number')
 args = parser.parse_args()
 
 assert os.path.isfile(args.file), 'ERROR::FILE DOES NOT EXIST'
 if not os.path.exists(args.save_folder):
     os.mkdir(args.save_folder)
 
-def frame_divider(video, rate, tot_frame, save_dir):
+def frame_divider(video, rate, start_num, tot_frame, save_dir):
      index = -1
      idx_save = 0
      print('Dividing video to frame...')
@@ -31,7 +32,7 @@ def frame_divider(video, rate, tot_frame, save_dir):
                     break
           if index % rate == 0:
                status = 'Frame count: {:d}, Saving count: {:d} \r'.format(index, idx_save)
-               cv2.imwrite(os.path.join(save_dir, 'frame_{}.jpg'.format(idx_save)), img)
+               cv2.imwrite(os.path.join(save_dir, 'frame_{}.jpg'.format(idx_save + start_num)), img)
                idx_save = idx_save + 1
           else:
                status = 'Frame count: {:d}, Saving count: {:d} \r'.format(index, idx_save)
@@ -53,4 +54,4 @@ if __name__ == '__main__':
           os.mkdir(save_dir)
 
      video = cv2.VideoCapture(args.file)
-     frame_divider(video, args.rate, args.total_frame, save_dir)
+     frame_divider(video, args.rate, args.start_number, args.total_frame, save_dir)

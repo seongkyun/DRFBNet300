@@ -163,16 +163,10 @@ def val_images(object_detector, img_dir, anno_dir, save_dir):
             f_gt.write(data)
         f_gt.close()
         
-
         # writing detected boxes
         f_det = open(os.path.join(result_dir, f_name), 'w')
         for j in range(len(_labels)):
             label = str(lable_map[int(_labels[j])])
-            #if args.car_only_mode:
-            #    if label == 'truck' or label == 'bus':
-            #        label = 'car'
-            #    if label != 'car':
-            #        continue
             data = label + ' ' + str(float(_scores[j]))
             
             for k in range(4):

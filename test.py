@@ -79,9 +79,6 @@ def test_net(save_folder, net, detector, cuda, testset, transform, max_per_image
         os.mkdir(save_folder)
     # dump predictions and assoc. ground truth to text file for now
     num_images = len(testset)
-    #print(testset.size())
-    #import sys
-    #sys.exit(0)
     num_classes = (21, 81)[args.dataset == 'COCO']
     all_boxes = [[[] for _ in range(num_images)]
                  for _ in range(num_classes)]
@@ -97,7 +94,6 @@ def test_net(save_folder, net, detector, cuda, testset, transform, max_per_image
         print('Evaluating detections')
         testset.evaluate_detections(all_boxes, save_folder)
         return
-
 
     for i in range(num_images):
         img = testset.pull_image(i)
@@ -149,8 +145,6 @@ def test_net(save_folder, net, detector, cuda, testset, transform, max_per_image
         if i % 20 == 0:
             status = 'im_detect: {:d}/{:d} {:.3f}s {:.3f}s'.format(i + 1, num_images, detect_time, nms_time)
             status_w = 'im_detect: {:d}/{:d} {:.3f}s {:.3f}s\n'.format(i + 1, num_images, detect_time, nms_time)
-            #print('im_detect: {:d}/{:d} {:.3f}s {:.3f}s'
-            #    .format(i + 1, num_images, detect_time, nms_time))
             print(status)
             f.write(status_w)
             _t['im_detect'].clear()
