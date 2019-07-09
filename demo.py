@@ -231,7 +231,14 @@ if __name__ == '__main__':
         else:
             name = k
         new_state_dict[name] = v
-    net.load_state_dict(new_state_dict)
+    
+    try:
+        net.load_state_dict(new_state_dict)
+    except RuntimeError:
+        print('ERROR::The version and weight file is not correct')
+        print('Check the version and trained weight file')
+        sys.exit()
+    
     net.eval()
     if args.cuda:
         net = net.cuda()
@@ -240,7 +247,7 @@ if __name__ == '__main__':
         net = net.cpu()
     print('Finished loading model')
     
-    nms_th = 0.45
+    nms_th = 0.6
     max_det = 100
 
     print('NMS_th: {:.2f}, Max_det: {:d}, Conf_th: {:.2f}'.format(nms_th, max_det, args.threshold))
