@@ -118,7 +118,7 @@ def demo_img(object_detector, img, save_dir):
     FPS = float(1/times[0])
     for labels, scores, coords in zip(_labels, _scores, _coords):
         cv2.rectangle(img, (int(coords[0]), int(coords[1])), (int(coords[2]), int(coords[3])), COLORS[labels % 3], 2)
-        cv2.putText(img, '{label}: {score:.2f}'.format(label=lable_map[labels], score=scores), (int(coords[0]), int(coords[1])), FONT, 1, COLORS[labels % 3], 1)
+        cv2.putText(img, '{label}: {score:.2f}'.format(label=lable_map[labels], score=scores), (int(coords[0]), int(coords[1])), FONT, 1, COLORS[labels % 3], 2)
 
     status = 'FPS: {:.2f} T_inf: {:.3f} T_misc: {:.3f}s \r'.format(FPS, times[1], times[2])
     cv2.putText(img, status[:-2], (10, 20), FONT, 0.5, (0, 0, 0), 5)
