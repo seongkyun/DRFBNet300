@@ -215,6 +215,7 @@ def train():
         stepvalues = (150 * epoch_size, 200 * epoch_size, 250 * epoch_size)
     elif args.dataset == 'COCO':
         stepvalues = (90 * epoch_size, 120 * epoch_size, 140 * epoch_size)
+        #stepvalues = (100 * epoch_size, 130 * epoch_size, 150 * epoch_size)
     else: # for custom dataset
         stepvalues = (90 * epoch_size, 120 * epoch_size, 140 * epoch_size)
     #stepvalues = (stepvalues_VOC,stepvalues_COCO)[args.dataset=='COCO']
