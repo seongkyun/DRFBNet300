@@ -209,26 +209,35 @@ def test(device=None):
     net = build_net('train', 300, 21).to(device)
     print(net)
     from torchsummary import summary
+    from utils.timer import Timer
     summary(net, input_size=(3, 300, 300), device=str(device))
-    inputs = torch.randn(32, 3, 300, 300)
-    out = net(inputs.to(device))
+    
+    _t = {'inf': Timer()}
+    t_inf = 0.0
+    inputs = torch.randn(32, 3, 300, 300).to(device)
+
+    _t['inf'].tic()
+    out = net(inputs)
+    t_inf += _t['inf'].toc()
+
+    print('Inference time: {:.3f} ms'.format(t_inf*1000))
     print('coords output size: ', out[0].size())
     print('class output size: ', out[1].size())
 
 #test("cpu")
+#test()
 
 '''
-======Results for SSD lite mobilenet v1======
-
 Total params: 7,844,832
 Trainable params: 7,844,832
 Non-trainable params: 0
 ----------------------------------------------------------------
 Input size (MB): 1.03
-Forward/backward pass size (MB): 257.18
+Forward/backward pass size (MB): 214.05
 Params size (MB): 29.93
-Estimated Total Size (MB): 288.13
+Estimated Total Size (MB): 245.00
 ----------------------------------------------------------------
+Inference time: 16.585 ms
 coords output size:  torch.Size([32, 2990, 4])
 class output size:  torch.Size([32, 2990, 21])
 '''
