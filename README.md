@@ -1,5 +1,5 @@
-# Real-time small object detection model in the bird-view UAV imagery
-By Seongkyun Han, Juwon Kwon, Soonchul Kwon
+# DRFBNet300
+By Seongkyun Han, Juwon Kwon, Jisang Yoo, Soonchul Kwon
 
 - This repo is came from [RFBNet](https://github.com/ruinmessi/RFBNet) and modified for my experiment.
 
