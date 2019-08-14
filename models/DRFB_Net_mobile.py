@@ -411,12 +411,12 @@ def test(device=None):
     end.record()
 
     torch.cuda.synchronize()
-    print('Relative inf time: {:.2f} ms'.format(start.elapsed_time(end)))
+    print('32 Batch Relative inf time: {:.2f} ms'.format(start.elapsed_time(end)))
     print('coords output size: ', out[0].size())
     print('class output size: ', out[1].size())
 
 #test("cpu")
-test()
+#test()
 '''
 Total params: 7,615,968
 Trainable params: 7,615,968

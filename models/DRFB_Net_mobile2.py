@@ -366,12 +366,22 @@ def test(device=None):
         device = torch.device("cpu")
     else:
         device = torch.device("cuda" if torch.cuda.is_available() else "cpu") # PyTorch v0.4.0
+    start = torch.cuda.Event(enable_timing=True)
+    end = torch.cuda.Event(enable_timing=True)
     net = build_net('train', 300, 21).to(device)
     print(net)
+
     from torchsummary import summary
     summary(net, input_size=(3, 300, 300), device=str(device))
-    inputs = torch.randn(32, 3, 300, 300)
-    out = net(inputs.to(device))
+
+    inputs = torch.randn(32, 3, 300, 300).to(device)
+
+    start.record()
+    out = net(inputs)
+    end.record()
+
+    torch.cuda.synchronize()
+    print('32 Batch Relative inf time: {:.2f} ms'.format(start.elapsed_time(end)))
     print('coords output size: ', out[0].size())
     print('class output size: ', out[1].size())
 #test("cpu")
