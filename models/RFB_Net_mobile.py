@@ -352,21 +352,22 @@ def test(device=None):
         device = torch.device("cpu")
     else:
         device = torch.device("cuda" if torch.cuda.is_available() else "cpu") # PyTorch v0.4.0
+    start = torch.cuda.Event(enable_timing=True)
+    end = torch.cuda.Event(enable_timing=True)
     net = build_net('train', 300, 21).to(device)
     print(net)
+
     from torchsummary import summary
-    from utils.timer import Timer
     summary(net, input_size=(3, 300, 300), device=str(device))
-    
-    _t = {'inf': Timer()}
-    t_inf = 0.0
+
     inputs = torch.randn(32, 3, 300, 300).to(device)
 
-    _t['inf'].tic()
+    start.record()
     out = net(inputs)
-    t_inf += _t['inf'].toc()
+    end.record()
 
-    print('Inference time: {:.3f} ms'.format(t_inf*1000))
+    torch.cuda.synchronize()
+    print('Relative inf time: {:.2f} ms'.format(start.elapsed_time(end)))
     print('coords output size: ', out[0].size())
     print('class output size: ', out[1].size())
     
@@ -382,7 +383,7 @@ Forward/backward pass size (MB): 235.63
 Params size (MB): 25.77
 Estimated Total Size (MB): 262.43
 ----------------------------------------------------------------
-Inference time: 22.199 ms
+Relative inf time: 80.64 ms
 coords output size:  torch.Size([32, 2990, 4])
 class output size:  torch.Size([32, 2990, 21])
 '''

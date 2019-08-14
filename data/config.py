@@ -10,6 +10,9 @@ VOCroot = os.path.join(ddir, 'VOCdevkit')
 COCOroot = os.path.join(ddir, 'coco')
 Customroot = os.path.join(ddir, 'drone_even_trainset')
 
+# min_sizes: Minimum object size of each feature maps
+# max_sizes: Maximum object size of each feature maps
+
 #RFB CONFIGS
 VOC_300 = {
     'feature_maps' : [38, 19, 10, 5, 3, 1],
