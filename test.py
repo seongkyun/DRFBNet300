@@ -201,14 +201,12 @@ if __name__ == '__main__':
     else:
         net = net.cpu()
     # evaluation
-    #top_k = (300, 200)[args.dataset == 'COCO']
-    top_k = 200
+    top_k = (200, 300)[args.dataset == 'VOC']
     detector = Detect(num_classes,0,cfg)
     if args.retest == 1:
         save_folder = args.save_folder
     else:
         save_folder = os.path.join(args.save_folder,args.dataset)
-    #rgb_means = ((104, 117, 123),(103.94,116.78,123.68))[args.version == 'RFB_mobile' or args.version == 'RFB_mobile_custom' or args.version == 'RFB_mobile_c_leaky']
     rgb_means = ((103.94,116.78,123.68), (104, 117, 123))[args.version == 'RFB_vgg' or args.version == 'RFB_E_vgg']
     test_net(save_folder, net, detector, args.cuda, testset,
              BaseTransform(net.size, rgb_means, (2, 0, 1)),

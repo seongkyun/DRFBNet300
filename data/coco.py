@@ -95,7 +95,6 @@ class COCODetection(data.Dataset):
             else:
                 self.annotations.extend(self._load_coco_annotations(coco_name, indexes,_COCO))
 
-
     def image_path_from_index(self, name, index):
         """
         Construct an image path from the image's "index" identifier.
