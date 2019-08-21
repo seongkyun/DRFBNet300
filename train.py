@@ -15,7 +15,6 @@ from data import *
 from layers.modules import MultiBoxLoss
 from layers.functions import PriorBox
 import time
-import sys
 
 parser = argparse.ArgumentParser(
     description='Receptive Field Block Net Training')
@@ -227,6 +226,10 @@ def train():
     else:
         start_iter = 0
 
+    if args.summary_writer != None:
+        print('TENSORBOARD: $ tensorboard --logdir=' + args.summary_writer)
+    else:
+        print('TENSORBOARD: $ tensorboard --logdir=./runs/folder_name')
     lr = args.lr
     for iteration in range(start_iter, max_iter):
         if iteration % epoch_size == 0:
@@ -235,10 +238,8 @@ def train():
                                                   shuffle=True, num_workers=args.num_workers, collate_fn=detection_collate))
             loc_loss = 0
             conf_loss = 0
-            if (epoch % 10 == 0 and epoch > 0) or (epoch % 5 ==0 and epoch > 200):
+            if (epoch % 10 == 0 and epoch > 0) or (epoch % 5 == 0 and epoch > 150):
                 filedir = os.path.join(save_dir, 'epoches_'+ repr(epoch) + '.pth')
-                #torch.save(net.state_dict(), args.save_folder+args.version+'_'+args.dataset + '_epoches_'+
-                #           repr(epoch) + '.pth')
                 torch.save(net.state_dict(), filedir)
             epoch += 1
 
@@ -274,11 +275,12 @@ def train():
         conf_loss += loss_c.item()
         load_t1 = time.time()
         if iteration % 10 == 0:
-            print('Epoch:' + repr(epoch) + ' || epochiter: ' + repr(iteration % epoch_size) + '/' + repr(epoch_size)
-                  + '|| Total iter ' +
-                  repr(iteration) + ' || L: %.4f C: %.4f||' % (
-                loss_l.item(),loss_c.item()) + 
-                'Batch time: %.4f sec. ||' % (load_t1 - load_t0) + 'LR: %.8f' % (lr))
+            status = 'Epoch:' + repr(epoch) + ' || epochiter: ' + repr(iteration % epoch_size) \
+            + '/' + repr(epoch_size) + '|| Total iter ' + repr(iteration) \
+            + ' || L: %.4f C: %.4f||' % (loss_l.item(),loss_c.item()) \
+            + 'Batch time: %.4f sec. ||' % (load_t1 - load_t0) + 'LR: %.8f' % (lr) + '\r'
+            sys.stdout.write(status)
+            sys.stdout.flush()
             summary.add_scalar('loss/loss_l', loss_l.item(), iteration)
             summary.add_scalar('loss/loss_c', loss_c.item(), iteration)
             summary.add_scalar('learning_rate', lr, iteration)
