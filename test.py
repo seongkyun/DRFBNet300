@@ -63,7 +63,7 @@ elif args.version == 'SSD_mobile':
     from models.SSD_lite_mobilenet_v1 import build_net
     cfg = mobile_300
 #=============TEST==============
-elif args.version == 'DRFB_mobile2':
+elif args.version == 'DRFB_mobile3':
     from models.DRFB_Net_mobile2 import build_net
     cfg = mobile_300
 #===============================

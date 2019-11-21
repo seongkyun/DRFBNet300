@@ -26,7 +26,7 @@ parser.add_argument('-v', '--version', default='DRFB_mobile',
                     help='RFB_vgg ,RFB_E_vgg or RFB_mobile version.')
 parser.add_argument('-s', '--size', default='300',
                     help='300 or 512 input size.')
-parser.add_argument('-d', '--dataset', default='COCO',
+parser.add_argument('-d', '--dataset', default='custom',
                     help='VOC or COCO version')
 parser.add_argument('-i', '--images', default=None, help='validation image file folder')
 parser.add_argument('-anno', '--annotations', default=None, help='validation annotation file folder')
@@ -39,8 +39,6 @@ parser.add_argument('-th', '--threshold', default=0.45,
                     type=float, help='Detection confidence threshold value')
 parser.add_argument('--cuda', default=True, type=bool,
                     help='Use cuda to train model')
-parser.add_argument('--div', default=False, type=bool, 
-                    help='Use half divided mode')
 parser.add_argument('-alt', '--altitude', default=10, help='drone altitude, unit: meter')
 # parsers for calculating mAP
 parser.add_argument('-na', '--no-animation', help="no animation is shown.", action="store_true")
@@ -60,18 +58,7 @@ if not os.path.exists(args.save_folder):
     os.mkdir(args.save_folder)
 
 # Object detector setting
-if args.div:
-    print("Running on divided mode")
-    try:
-        from lib.detector_div import ObjectDetector_div as ObjectDetector
-    except ImportError:
-        print("lib folder is not exist.")
-        print("Running on common mode")
-        from lib.detector import ObjectDetector   
-        args.div = False
-else:
-    print("Running on common mode")
-    from lib.detector import ObjectDetector
+from lib.detector import ObjectDetector
 
 # Label settings
 if args.dataset == 'VOC':
@@ -192,10 +179,7 @@ if __name__ == '__main__':
     if args.annotations[-1] == '/':
         args.annotations = args.annotations[:-1]
     path, _ = os.path.splitext(args.images)
-    if args.div:
-        filename = args.version + '_' + path.split('/')[-1] + '_div_mode'
-    else:
-        filename = args.version + '_' + path.split('/')[-1]
+    filename = args.version + '_' + path.split('/')[-1]
     save_dir = os.path.join(args.save_folder, filename)
     if not os.path.exists(save_dir):
         os.mkdir(save_dir)

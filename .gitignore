@@ -10,7 +10,6 @@ __pycache__/
 .Python
 build/
 
-
 weights
 pretrained
 val_results
@@ -22,11 +21,11 @@ runs
 eval
 *.out
 
+# Experimental files
 lib/detector_div.py
 lib/functions.py
+test_div.py
 
-# Experimental codes
-models/SSD_lite_mobilenets.py
 trashbins
 test_trainset
 

@@ -37,7 +37,7 @@ parser.add_argument('--save_folder', default='results/', type=str,
 parser.add_argument('-th', '--threshold', default=0.45,
                     type=float, help='Detection confidence threshold value')
 parser.add_argument('-t', '--type', dest='type', default='image', type=str,
-            help='the type of the demo file, could be "image", "video", "camera"')
+            help='the type of the demo file, could be "image", "video", "camera", "folder"')
 parser.add_argument('--cuda', default=True, type=bool,
                     help='Use cuda to train model')
 parser.add_argument('--div', default=False, type=bool, 
