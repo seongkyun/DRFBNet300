@@ -35,13 +35,13 @@ parser.add_argument('--cuda', default=True,
                     type=bool, help='Use cuda to train model')
 parser.add_argument('--ngpu', default=1, type=int, help='gpus')
 parser.add_argument('--lr', '--learning-rate',
-                    default=4e-3, type=float, help='initial learning rate')
+                    default=2e-3, type=float, help='initial learning rate')
 parser.add_argument('--momentum', default=0.9, type=float, help='momentum')
 parser.add_argument(
     '--resume_net', default=None, help='resume net for retraining')
 parser.add_argument('--resume_epoch', default=0,
                     type=int, help='resume iter for retraining')
-parser.add_argument('-max','--max_epoch', default=300,
+parser.add_argument('-max','--max_epoch', default=150,
                     type=int, help='max epoch for retraining')
 parser.add_argument('--weight_decay', default=5e-4,
                     type=float, help='Weight decay for SGD')
@@ -132,12 +132,21 @@ if args.resume_net == None:
     def weights_init(m):
         for key in m.state_dict():
             if key.split('.')[-1] == 'weight':
+                # for only weight files
                 if 'conv' in key:
-                    init.kaiming_normal_(m.state_dict()[key], mode='fan_out')
+                    #print(key.split('.'))
+                    if(m.state_dict()[key].dim()==1):
+                        m.state_dict()[key][...] = 1
+                    else:
+                        init.kaiming_normal_(m.state_dict()[key], mode='fan_out')
                 if 'bn' in key:
+                    #print(key)
                     m.state_dict()[key][...] = 1
             elif key.split('.')[-1] == 'bias':
+                #print(key.split('.'))
                 m.state_dict()[key][...] = 0
+            
+
 
     print('Initializing weights...')
 # initialize newly added layers' weights with kaiming_normal method

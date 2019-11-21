@@ -9,7 +9,7 @@ import os
 import sys
 sys.path.append(os.path.dirname(os.path.abspath(os.path.dirname(__file__))))
 from layers import *
-from mixnet import *
+from models.mixnet import *
 
 class BasicConv(nn.Module):
 
@@ -318,7 +318,7 @@ def add_extras(size, cfg, i, batch_norm=False):
                 layers += [Mix_b_Block(in_channels,cfg[k+1],stride = 2,scale=1.0)]
                 #layers += [BasicRFB(in_channels, cfg[k+1], stride=2, scale = 1.0)]
             else:
-                layers += [Mix_b_Block(in_channels,v,scale=1.0)]
+                layers += [Mix_b_Block(in_channels, v, scale=1.0)]
                 #layers += [BasicRFB(in_channels, v, scale = 1.0)]
         in_channels = v
     if size ==300:
@@ -414,8 +414,10 @@ def test(device=None):
     print('class output size: ', out[1].size())
     
 #test("cpu")
-test()
+#test()
 '''
+- RFB mobile result
+
 Total params: 6,754,208
 Trainable params: 6,754,208
 Non-trainable params: 0
@@ -426,6 +428,51 @@ Params size (MB): 25.77
 Estimated Total Size (MB): 262.43
 ----------------------------------------------------------------
 Relative inf time: 80.64 ms
+coords output size:  torch.Size([32, 2990, 4])
+class output size:  torch.Size([32, 2990, 21])
+
+- Mix mobile module result
+
+Total params: 9,054,176
+Trainable params: 9,054,176
+Non-trainable params: 0
+----------------------------------------------------------------
+Input size (MB): 1.03
+Forward/backward pass size (MB): 678.89
+Params size (MB): 34.54
+Estimated Total Size (MB): 714.46
+----------------------------------------------------------------
+32 Batch Relative inf time: 114.81 ms
+coords output size:  torch.Size([32, 2990, 4])
+class output size:  torch.Size([32, 2990, 21])
+
+- Mix mobile basic result
+
+Total params: 7,337,376
+Trainable params: 7,337,376
+Non-trainable params: 0
+----------------------------------------------------------------
+Input size (MB): 1.03
+Forward/backward pass size (MB): 252.92
+Params size (MB): 27.99
+Estimated Total Size (MB): 281.94
+----------------------------------------------------------------
+32 Batch Relative inf time: 83.35 ms
+coords output size:  torch.Size([32, 2990, 4])
+class output size:  torch.Size([32, 2990, 21])
+
+- Mix det modible result
+
+Total params: 9,844,448
+Trainable params: 9,844,448
+Non-trainable params: 0
+----------------------------------------------------------------
+Input size (MB): 1.03
+Forward/backward pass size (MB): 840.71
+Params size (MB): 37.55
+Estimated Total Size (MB): 879.29
+----------------------------------------------------------------
+32 Batch Relative inf time: 104.63 ms
 coords output size:  torch.Size([32, 2990, 4])
 class output size:  torch.Size([32, 2990, 21])
 '''
