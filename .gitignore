@@ -22,8 +22,8 @@ eval
 *.out
 
 # Experimental files
-lib/detector_div.py
-lib/functions.py
+#lib/detector_div.py
+#lib/functions.py
 test_div.py
 
 trashbins

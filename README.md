@@ -3,6 +3,9 @@ By Seongkyun Han, Juwon Kwon, Jisang Yoo, Soonchul Kwon
 
 - This repo is came from [RFBNet](https://github.com/ruinmessi/RFBNet) and modified for my experiment.
 
+- Seongkyun Han, Jisang Yoo, and Soonchul Kwon. METHOD AND APPARATUS FOR REALTIME OBJECT DETECTION IN UNMANNED AERIAL VEHICLE IMAGE. US Patent 16/711,894 (10-2019-0154978 (KR)), filed Dec 12 (Nov 28), 2019
+
+
 ### Introduction
 
 ## Installation
